@@ -1,0 +1,20 @@
+extends ../layout/admin
+
+block styles 
+    link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/dropzone.css")
+    meta(name="csrf-token" content= csrfToken)
+
+block content
+    div.py-5
+        h1.text-4xl.my-5.font-semibold.text-center Real
+            span.font-normal Estate 
+        h2.text-center.text-2xl= page 
+            
+        div(class="bg-white shadow py-5 px-4 rounded mx-auto max-w-4xl my-10")
+            form(id="img" class="dropzone border-dashed border-2 w-full min:h-96 h-auto rounded flex-col justify-center items-center" method="POST" action=`/properties/add-img/${prop.id}`)
+                input(type="hidden" name="_csrf" value= csrfToken)
+            button(id="post" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white rounded-md py-2 px-5z cursor-pointer mt-5" type="button") Post property
+                    
+
+block scripts
+    script(src="/js/addImg.js")

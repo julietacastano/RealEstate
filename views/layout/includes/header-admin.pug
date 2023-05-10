@@ -1,0 +1,11 @@
+header.bg-indigo-600.p-4
+    .container.mx-auto.flex.justify-between.items-center.flex.flex-wrap
+        a(href="/")
+            h1(class="text-2xl text-white font-semibold text-center lg:px-10") Real
+                span.font-normal Estate
+        
+        nav(class="my-3 mx-5 text-sm gap-3 flex flex-wrap items-center md:gap-10 md:px-10 font-medium text-white")
+            a(href="/my-properties") My properties
+            form(action="/auth/logout", method="POST") 
+                input(type="hidden" name="_csrf" value= csrfToken)
+                input(type="submit" class= "bg-indigo-800 py-2 px-10 rounded-lg cursor-pointer" value="Sign out") 

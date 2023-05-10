@@ -1,0 +1,40 @@
+extends ./layout/app
+
+block styles 
+    link(rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css")
+
+block content
+    div(class="py-5 mx-5 lg:mx-20 md:mx-10")
+        h2(class="text-center text-2xl font-semibold") Locations map
+        
+        div(class="flex flex-col md:flex-row items-center py-5 gap-4")
+            h3(class="text-sm uppercase text-gray-800 font-semibold") Filter properties: 
+            div(class="w-full md:w-auto flex flex-1 items-center gap-2")
+                label(for="categories" class='text-sm w-24 uppercase text-gray-500 font-semibold') Categories 
+                select(id="categories" class="bg-white w-auto px-3 py-1 border border-gray-300 rounded-md shadow") 
+                    option(value="") - Select category -
+                    each category in categories 
+                        option(value=category.id)= category.name 
+            div(class="w-full md:w-auto flex flex-1 items-center gap-2")
+                label(for="prices" class='text-sm w-24 uppercase text-gray-500 font-semibold') Prices
+                select(id="prices" class="bg-white w-auto px-3 py-1 border border-gray-300 rounded-md shadow") 
+                    option(value="") - Select price -
+                    each price in prices 
+                        option(value=price.id)= price.name 
+        
+        div(id="homeMap" class="h-[500px] mt-5")
+
+        section(class="py-5")
+            h3(class="text-center text-2xl font-semibold mt-10") Houses for sale
+            div(class="grid grid-cols-1 lg:grid-cols-3 gap-5 mt-5")
+                each property in houses 
+                    include ./templates/card
+            h3(class="text-center text-2xl font-semibold mt-10") Apartments for sale
+            div(class="grid grid-cols-1 lg:grid-cols-3 gap-5 mt-5") 
+                each property in apartments
+                    include ./templates/card
+
+
+block scripts
+    script(src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js")
+    script(src="/js/homeMap.js")

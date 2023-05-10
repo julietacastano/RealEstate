@@ -1,0 +1,14 @@
+extends ./layout/app
+
+block content
+    section(class="py-5")
+        h3(class="text-center text-2xl font-semibold mt-10")= page 
+        
+        if properties.length
+            div(class="grid grid-cols-1 lg:grid-cols-3 gap-5 mt-5 mx-10")
+                each property in properties 
+                    include ./templates/card
+        else 
+            p(class="text-center text-gray-800 text-sm py-10") There are no properties for sale
+
+

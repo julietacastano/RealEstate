@@ -1,0 +1,60 @@
+extends ../layout/admin
+
+block styles
+    meta(name="csrf-token" content= csrfToken)
+
+block content
+    div.py-5
+        h1.text-4xl.my-5.font-semibold.text-center Real
+            span.font-normal Estate 
+        h2.text-center.text-2xl= page 
+
+        a(href="/properties/post" class="rounded py-2 px-10 bg-indigo-600 hover:bg-indigo-800 text-sm text-white uppercase font-semibold m-5 inline-block") Post a property
+
+        //pre= JSON.stringify(properties, undefined, 2)
+
+        if properties.length
+            div(class="bg-white shadow rounded-lg mx-5")
+                ul(class="divide-y divide-gray-200")
+                    each property in properties 
+                        li 
+                            div(class="p-6 w-full flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-8 md:space-y-0 gap-4")
+                                div(class="sm:w-1/4 md:w-1/6")
+                                    img(src=`uploads/${property.img}` alt=`Image property: ${property.title}` class="w-full block")
+
+                                div(class="sm:w-2/4 md:w-3/6 lg:w-4/6 space-y-3")
+                                    a(href=`/properties/${property.id}` class="block text-2xl font-semibold text-indigo-600")= property.title
+                                    p(class="text-sm font-medium")= property.category.name
+                                    p(class="text-sm font-medium")= property.price.name
+                                    a(href=`/message/${property.id}` class="text-sm text-indigo-700 font-medium")=`${property.messages.length} messages`
+
+                                div(class="sm:w-1/4 md:w-2/6 w-1/6 flex flex-col gap-2 lg:flex-row")
+                                    button(type="button" data-property-id=`${property.id}` class=`changeStatus w-full px-2 py-2 md:py-1 text-xs leading-5 font-semibold rounded cursor-pointer ${property.posted ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`)= property.posted ? 'Posted' : 'Not posted'
+
+                                    a(href=`/properties/edit/${property.id}` class="w-full px-2 py-2 md:py-1 text-xs leading-5 font-semibold rounded cursor-pointer bg-indigo-100 text-indigo-800 text-center") Edit
+
+                                    form(method="POST" action=`/properties/delete/${property.id}`)
+                                        input(type="hidden" name="_csrf" value= csrfToken)
+                                        input(type="submit" class='w-full px-2 py-2 md:py-1 text-xs leading-5 font-semibold rounded cursor-pointer bg-red-100 text-red-800' value='Delete')  
+                
+                div(class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6")
+                    div(class="flex-1 flex justify-between sm:hidden")
+                        a(href=`/my-properties?page=${currentPage - 1}` class=`${currentPage == 1 ? ' hidden':''} relative inline-flex intems-center px-4 py-2 border border-gray-800 text-gray-700 hover:bg-indigo-50 text-sm font-medium rounded-md`) Previous 
+                        a(href=`/my-properties?page=${currentPage + 1}` class=`${currentPage == pages ? 'hidden':''} relative inline-flex intems-center px-4 py-2 border border-gray-800 text-gray-700 hover:bg-indigo-50 text-sm font-medium rounded-md`) Next
+
+                    div(class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between")
+                        p(class="text-sm text-gray-800 gap-2") Showing  
+                            span(class="font-medium") #{offset + 1} -  
+                            span(class="font-medium") #{total < limit + offset ? total : limit + offset} of 
+                            span(class="font-medium") #{total} results. 
+                    div(class="hidden sm:block")
+                        nav(class="relative z-0 inline-flex rounded-md shadow-md")
+                            -let n=1;
+                                while n<=pages
+                                    a(href=`/my-properties?page=${n}` class=`${currentPage == n ? 'bg-indigo-100 border-indigo-500 text-indigo-600' : 'text-gray-500 hover:bg-indigo-50'} relative inline-flex intems-center px-4 py-2 border text-sm font-medium`) #{n++} 
+        else
+            p.text-center There are no properties posted yet
+
+            
+block scripts
+    script(src="/js/changeStatus.js")
